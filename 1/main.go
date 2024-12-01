@@ -36,6 +36,7 @@ func main() {
   sort.Ints(list2)
 
   fmt.Println(sumDifferenceBetweenLists(list1, list2))
+  fmt.Printf("Total Similarity Rating: %d", findTotalWithRepeats(list1, list2))
 
 }
 
@@ -63,6 +64,19 @@ func sumDifferenceBetweenLists(list1 []int, list2 []int) int {
   total := 0
   for i := 0 ; i < len(list1) ; i++ {
     total += diffNumbers(list1[i], list2[i])
+  }
+  return total
+}
+
+func findTotalWithRepeats(list1 []int, list2 []int) int {
+  countInList2 := make(map[int]int)
+  for _, num := range list2 {
+    countInList2[num] = countInList2[num] +1
+  }
+
+  total := 0
+  for _, num := range list1 {
+    total += (num * countInList2[num])
   }
   return total
 }

@@ -55,3 +55,23 @@ func TestSumlistsReturnsDifferenceBetweenMultipleItemsInLists(t *testing.T) {
     t.Errorf("Expected total of 3 but got %d", total)
   }
 }
+
+func TestFindNumbersAndCountOfRepeat(t *testing.T) {
+  list1 := []int{2, 3}
+  list2 := []int{3, 3}
+
+  total := findTotalWithRepeats(list1, list2)
+  if total != 6 {
+    t.Errorf("Expected 6 total for number 3, got: %d", total)
+  }
+}
+
+func TestFunctionalDay1Part2(t *testing.T) {
+  list1 := []int{3,4,2,1,3,3}
+  list2 := []int{4, 3, 5, 3, 9, 3}
+
+  total := findTotalWithRepeats(list1, list2)
+  if total != 31 {
+    t.Errorf("Expected total of 31, got: %d", total)
+  }
+}
