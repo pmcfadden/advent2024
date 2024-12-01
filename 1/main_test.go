@@ -23,3 +23,35 @@ func TestParseLineShouldOnlyHaveTwoNumbers(t *testing.T) {
     t.Errorf("Expected an error but did not get one")
   }
 }
+
+func TestDiffNumbersShouldReturnDifference(t *testing.T) {
+  difference := diffNumbers(3, 1)
+  if difference != 2 {
+    t.Errorf("Expected difference of 2, but got %d", difference)
+  }
+}
+
+func TestDiffNumbersShouldReturnAbsValueDifference(t *testing.T) {
+  difference := diffNumbers(1, 3)
+  if difference != 2 {
+    t.Errorf("Expected difference of 2, but got %d", difference)
+  }
+}
+
+func TestSumlistsReturnsDifferenceBetweenLists(t *testing.T) {
+  list1 := []int{1}
+  list2 := []int{3}
+  total := sumDifferenceBetweenLists(list1, list2)
+  if total != 2 {
+    t.Errorf("Expected total of 2 but got %d", total)
+  }
+}
+
+func TestSumlistsReturnsDifferenceBetweenMultipleItemsInLists(t *testing.T) {
+  list1 := []int{1, 5}
+  list2 := []int{3, 6}
+  total := sumDifferenceBetweenLists(list1, list2)
+  if total != 3 {
+    t.Errorf("Expected total of 3 but got %d", total)
+  }
+}

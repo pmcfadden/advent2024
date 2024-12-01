@@ -5,8 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/adam-lavrik/go-imath/ix"
 )
 
 func main() {
@@ -28,8 +31,11 @@ func main() {
     list1 = append(list1, item1)
     list2 = append(list2, item2)
   }
-  fmt.Println(len(list1))
-  fmt.Println(len(list2))
+
+  sort.Ints(list1)
+  sort.Ints(list2)
+
+  fmt.Println(sumDifferenceBetweenLists(list1, list2))
 
 }
 
@@ -47,4 +53,16 @@ func parseLine(fileLine string) (int, int, error) {
     return -1, -1, err
   }
   return num1, num2, nil
+}
+
+func diffNumbers(num1 int, num2 int) int {
+  return ix.Abs(num1 - num2)
+}
+
+func sumDifferenceBetweenLists(list1 []int, list2 []int) int {
+  total := 0
+  for i := 0 ; i < len(list1) ; i++ {
+    total += diffNumbers(list1[i], list2[i])
+  }
+  return total
 }
