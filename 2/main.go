@@ -20,18 +20,67 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	numberOfValidReports := 0
+	numberOfValidReportsWithSafety := 0
 	for scanner.Scan() {
 		line := scanner.Text()
 		report, err := parseLine(line)
 		if err != nil {
 			log.Panicf("Error parsing line: %v", err)
 		}
-		if validateReport(report) {
+		if validateReportWithoutSafety(report) {
 			numberOfValidReports++
 		}
+		if validateReportWithSafety(report) {
+			numberOfValidReportsWithSafety++
+		}
 	}
-	fmt.Printf("There were %d valid reports.\n", numberOfValidReports)
+	fmt.Printf("There were %d valid reports without safety.\n", numberOfValidReports)
+	fmt.Printf("There were %d valid reports with safety.\n", numberOfValidReportsWithSafety)
 
+}
+
+func validateReportWithSafety(report []int) bool {
+	prevDifference := 0
+	safetyLevelUsed := false
+	for i := 0; i < (len(report) - 1); i++ {
+		difference := report[i] - report[i+1]
+		if prevDifference != 0 {
+			if difference > 0 && prevDifference < 0 {
+				if safetyLevelUsed {
+					log.Printf("returning false for difference > 0")
+					return false
+				} else {
+					log.Printf("Setting safety level true for difference > 0")
+					safetyLevelUsed = true
+					continue
+				}
+			}
+			if difference < 0 && prevDifference > 0 {
+				if safetyLevelUsed {
+					log.Printf("returning false for difference < 0")
+					return false
+				} else {
+					log.Printf("Setting safety level true for difference < 0")
+					safetyLevelUsed = true
+					continue
+				}
+			}
+		}
+
+		absDifference := ix.Abs(difference)
+		if absDifference > 3 || absDifference == 0 {
+			if safetyLevelUsed {
+				log.Printf("returning false for > 3 or the same")
+				return false
+			} else {
+				log.Printf("Setting safety level true for difference > 3 or the same")
+				safetyLevelUsed = true
+				continue
+			}
+		}
+		prevDifference = difference
+	}
+	return true
 }
 
 func parseLine(line string) ([]int, error) {
@@ -47,7 +96,7 @@ func parseLine(line string) ([]int, error) {
 	return levels, nil
 }
 
-func validateReport(report []int) bool {
+func validateReportWithoutSafety(report []int) bool {
 	prevDifference := 0
 	for i := 0; i < (len(report) - 1); i++ {
 		difference := report[i] - report[i+1]

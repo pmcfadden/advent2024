@@ -19,7 +19,7 @@ func TestParseLineShouldReturnArrayOfInts(t *testing.T) {
 
 func TestValidateReportShouldAllowIncrease(t *testing.T) {
 	report := []int{1, 2}
-	got := validateReport(report)
+	got := validateReportWithoutSafety(report)
 	if !got {
 		t.Errorf("Report should have been valid and was not")
 	}
@@ -27,7 +27,7 @@ func TestValidateReportShouldAllowIncrease(t *testing.T) {
 
 func TestValidateReportShouldNotAllowLargeIncrease(t *testing.T) {
 	report := []int{1, 5}
-	got := validateReport(report)
+	got := validateReportWithoutSafety(report)
 	if got {
 		t.Errorf("Report should not have been valid and was")
 	}
@@ -35,7 +35,7 @@ func TestValidateReportShouldNotAllowLargeIncrease(t *testing.T) {
 
 func TestValidateReportShouldNotAllowLargeDecrease(t *testing.T) {
 	report := []int{5, 1}
-	got := validateReport(report)
+	got := validateReportWithoutSafety(report)
 	if got {
 		t.Errorf("Report should not have been valid and was")
 	}
@@ -43,7 +43,7 @@ func TestValidateReportShouldNotAllowLargeDecrease(t *testing.T) {
 
 func TestValidateReportShouldNotAllowNoChange(t *testing.T) {
 	report := []int{5, 5}
-	got := validateReport(report)
+	got := validateReportWithoutSafety(report)
 	if got {
 		t.Errorf("Report should not have been valid and was")
 	}
@@ -51,7 +51,7 @@ func TestValidateReportShouldNotAllowNoChange(t *testing.T) {
 
 func TestValidateReportShouldNotAllowIncreaseThenDecrease(t *testing.T) {
 	report := []int{1, 3, 2}
-	got := validateReport(report)
+	got := validateReportWithoutSafety(report)
 	if got {
 		t.Errorf("Report should not have been valid and was")
 	}
@@ -59,8 +59,24 @@ func TestValidateReportShouldNotAllowIncreaseThenDecrease(t *testing.T) {
 
 func TestValidateReportShouldNotAllowDecreaseThenIncrease(t *testing.T) {
 	report := []int{3, 1, 2}
-	got := validateReport(report)
+	got := validateReportWithoutSafety(report)
 	if got {
 		t.Errorf("Report should not have been valid and was")
+	}
+}
+
+func TestValidateReportShouldAllowASingleBadLevel(t *testing.T) {
+	report := []int{1, 3, 2}
+	got := validateReportWithSafety(report)
+	if !got {
+		t.Errorf("Report should have been valid and was not")
+	}
+}
+
+func TestValidateReportShouldNotAllowMultipleBadLevels(t *testing.T) {
+	report := []int{1, 3, 2, 2}
+	got := validateReportWithSafety(report)
+	if got {
+		t.Errorf("Report should have been valid and was not")
 	}
 }
