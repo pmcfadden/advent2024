@@ -73,10 +73,34 @@ func TestValidateReportShouldAllowASingleBadLevel(t *testing.T) {
 	}
 }
 
-func TestValidateReportShouldNotAllowMultipleBadLevels(t *testing.T) {
-	report := []int{1, 3, 2, 2}
+func TestValidateReportShouldNotAllowMultipleBadLevelsFirstAscending(t *testing.T) {
+	report := []int{1, 4, 3, 2}
 	got := validateReportWithSafety(report)
 	if got {
-		t.Errorf("Report should have been valid and was not")
+		t.Errorf("Report should not have been valid and was")
+	}
+}
+
+func TestValidateReportShouldNotAllowMultipleBadLevelsFirstDescending(t *testing.T) {
+	report := []int{4, 2, 3, 4}
+	got := validateReportWithSafety(report)
+	if got {
+		t.Errorf("Report should not have been valid and was")
+	}
+}
+
+func TestValidateReportShouldNotAllowMultipleBadLevelsWithDistanceOver3(t *testing.T) {
+	report := []int{1, 5, 10, 15}
+	got := validateReportWithSafety(report)
+	if got {
+		t.Errorf("Report should not have been valid and was")
+	}
+}
+
+func TestValidateReportShouldAllowSingleBadLevelsWithDistanceOver3(t *testing.T) {
+	report := []int{1, 5, 6, 7}
+	got := validateReportWithSafety(report)
+	if !got {
+		t.Errorf("Report should have been valid and was")
 	}
 }
